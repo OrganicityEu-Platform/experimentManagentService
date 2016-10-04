@@ -1,0 +1,93 @@
+[07:37:24] Using gulpfile ~/ep-api-sa/gulpfile.js
+[07:37:24] Starting 'build-js'...
+[07:37:24] Starting 'dirs'...
+[07:37:24] Finished 'dirs' after 236 μs
+[32m /logs folder created [0m
+[32m /public folder created [0m
+[32m /public/experimentLogos folder created [0m
+[32m /public/applicationLogos folder created [0m
+[07:37:24] Finished 'build-js' after 37 ms
+[07:37:24] Starting 'watch'...
+[07:37:24] Finished 'watch' after 9.06 ms
+[07:37:24] Starting 'serve'...
+[07:37:24] [nodemon] 1.10.2
+[07:37:24] [nodemon] to restart at any time, enter `rs`
+[07:37:24] [nodemon] watching: *.*
+[07:37:24] [nodemon] starting `node app.js`
+
+stream.js:94
+      throw er; // Unhandled stream error in pipe.
+            ^
+Error: EBADF, read
+[07:38:40] Using gulpfile ~/ep-api-sa/gulpfile.js
+[07:38:40] Starting 'build-js'...
+[07:38:40] Starting 'dirs'...
+[07:38:40] Finished 'dirs' after 260 μs
+[32m /logs folder created [0m
+[32m /public folder created [0m
+[32m /public/experimentLogos folder created [0m
+[32m /public/applicationLogos folder created [0m
+[07:38:40] Finished 'build-js' after 60 ms
+[07:38:40] Starting 'watch'...
+[07:38:40] Finished 'watch' after 11 ms
+[07:38:40] Starting 'serve'...
+[07:38:40] [nodemon] 1.10.2
+[07:38:40] [nodemon] to restart at any time, enter `rs`
+[07:38:40] [nodemon] watching: *.*
+[07:38:40] [nodemon] starting `node app.js`
+
+stream.js:94
+      throw er; // Unhandled stream error in pipe.
+            ^
+Error: EBADF, read
+WARNING: No configurations found in configuration directory:/home/uc/ep-api-sa/config
+WARNING: To disable this warning set SUPPRESS_NO_CONFIG_WARNING in the environment.
+[36m Started connection on [mongodb://localhost:27017/ems] waiting for it to open... [0m
+[32m Connected to mongo db! [0m
+[32m Server listening in PORT 8081 [0m
+Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
+
+module.js:340
+    throw err;
+          ^
+Error: Cannot find module 'express'
+    at Function.Module._resolveFilename (module.js:338:15)
+    at Function.Module._load (module.js:280:25)
+    at Module.require (module.js:364:17)
+    at require (module.js:380:17)
+    at Object.<anonymous> (/home/uc/ep-api-sa/app.js:2:15)
+    at Module._compile (module.js:456:26)
+    at Object.Module._extensions..js (module.js:474:10)
+    at Module.load (module.js:356:32)
+    at Function.Module._load (module.js:312:12)
+    at Function.Module.runMain (module.js:497:10)
+WARNING: No configurations found in configuration directory:/home/uc/ep-api-sa/config
+WARNING: To disable this warning set SUPPRESS_NO_CONFIG_WARNING in the environment.
+[36m Started connection on [mongodb://localhost:27017/ems] waiting for it to open... [0m
+[32m Connected to mongo db! [0m
+[32m Server listening in PORT 8081 [0m
+Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
+Getting tags of the experiment
+Tags got
+Getting tags of the experiment
+Tags got
+Getting tags of the experiment
+Tags got
+Getting tags of the experiment
+Tags got
+WARNING: No configurations found in configuration directory:/home/uc/ep-api-sa/config
+WARNING: To disable this warning set SUPPRESS_NO_CONFIG_WARNING in the environment.
+[36m Started connection on [mongodb://localhost:27017/ems] waiting for it to open... [0m
+[32m Connected to mongo db! [0m
+[32m Server listening in PORT 8081 [0m
+Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
+Getting tags of the experiment
+Tags got
+Getting tags of the experiment
+Tags got
+Getting tags of the experiment
+Tags got
+Getting tags of the experiment
+Tags got
+Getting tags of the experiment
+Tags got

@@ -1,0 +1,586 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Experiment Management Service
+  description: This is the API description of the Experiment Management Service of the Organicity project
+  termsOfService: none
+  contact:
+    name: Organicity
+    url: http://organicity.eu/
+  license:
+    name: none
+    url: http://none
+host: localhost:8081
+# host: 31.200.243.76:8081
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:  
+
+  /invitations :
+    get:
+      tags: 
+       - Invitations
+      description: | 
+        Get the invitations of a given participant
+      operationId: invitationsGet
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+       "200":
+        description: The experiment is running
+       "404":
+        description: Not found
+    post:
+      tags: 
+       - Invitations
+      description: | 
+        Post invitations
+      operationId: invitationsPost
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ... 
+      responses:
+       "200":
+        description: The experiment is running
+       "404":
+        description: Not found    
+  /emscheck/experimentrunning/{expId} :
+    get:
+      tags: 
+       - Checks
+      description: | 
+        Check whether an experiment is running
+      operationId: emsCheckExpRunning
+      parameters:
+        - name: expId
+          in: path
+          description: Experiment Id
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+       "200":
+        description: The experiment is running
+       "404":
+        description: The experiment is not running
+       "400":
+        description: Bad request
+        
+  /emscheck/assets-public/{expId} :
+    get:
+      tags: 
+       - Checks
+      description: | 
+        Check whether an experiment has public assets
+      operationId: emsCheckAssetsPublic
+      parameters:
+        - name: expId
+          in: path
+          description: Experiment Id
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+       "200":
+        description: The experiment has public assets
+       "404":
+        description: The experiment has not public assets
+       "400":
+        description: Bad request      
+        
+          
+  /emscheck/experimentowner/{experId}/{expId} :
+    get:
+      tags: 
+       - Checks
+      description: | 
+        Check whether an experimenter is the owner of one experiment
+      operationId: emsCheckOwner  
+      parameters:
+        - name: experId
+          in: path
+          description: Experimenter Id
+          required: true
+          type: string
+        - name: expId
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+       "200":
+        description: The experimenter is the owner
+       "404":
+        description: The experimenter is not the owner
+       "400":
+        description: Bad request
+        
+  /emscheck/application-experiment/{expId}/{appId} :
+    get:
+      tags: 
+       - Checks
+      description: | 
+        Check whether an application belongs to one experiment
+      operationId: emsCheckAppExp
+      parameters:
+        - name: expId
+          in: path
+          description: Experiment Id
+          required: true
+          type: string
+        - name: appId
+          type: string
+          in: path
+          required: true
+          description: Application ID
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+       "200":
+        description: The application belongs to the experiment
+       "404":
+        description: The application does not belong to the experiment
+       "400":
+        description: Bad request      
+        
+  /emscheck/participant-experiment/{parId}/{expId} :
+    get:
+      tags: 
+       - Checks
+      description: | 
+        Check whether a participant takes part in the experiment
+      operationId: emsCheckParExp
+      parameters:
+        - name: expId
+          in: path
+          description: Experiment Id
+          required: true
+          type: string
+        - name: parId
+          type: string
+          in: path
+          required: true
+          description: participant ID
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+       "200":
+        description: The participant takes part in the experiment
+       "404":
+        description: The participant does not take part in the experiment
+       "400":
+        description: Bad request        
+        
+  /experiments/{expId}/mainexperimenter :
+    get:
+      tags:
+        - Experiments
+      description: |
+        Get the ID of the main experimenter
+      operationId: getMainExperimenter
+      parameters:
+        - name: expId
+          in: path
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+          
+      responses:
+        "200": 
+          description: OK
+          schema:
+            properties:
+              mainExperimenter:
+                type: string
+        "404": 
+          description: experiment not found
+        "403": 
+          description: authorization failure
+  
+  /experiments/{expId}/quota:
+    get:
+      tags:
+        - Experiments
+      description: |
+        Get the overall experiment quota
+      operationId: getExpQuota
+      parameters:
+        - name: expId
+          in: path
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+        "200": 
+          description: OK
+          schema:
+            properties:
+              quota:
+                type: number
+        "404": 
+          description: experiment not found
+        "403": 
+          description: authorization failure        
+  
+  /experiments/{expId}/remainingquota:
+    get:
+      tags:
+        - Experiments
+      description: |
+        Get the remaining quota of the experiment
+      operationId: getExpRemQuota
+      parameters:
+        - name: expId
+          in: path
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+        "200": 
+          description: OK
+          schema:
+            properties:
+              remainingQuota:
+                type: number
+        "404": 
+          description: experiment not found
+        "403": 
+          description: authorization failure     
+          
+  /experiments/{expId}/decreaseremquota:
+    post:
+      tags:
+        - Experiments
+      description: |
+        Increa
+      operationId: postExpDecRemQuota
+      parameters:
+        - name: expId
+          in: path
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+        "200": 
+          description: OK
+          schema:
+            properties:
+              remainingQuota:
+                type: number
+        "404": 
+          description: experiment not found
+        "409": 
+          description: the remaining quota could not be descreased (e.g. it is 0)
+        "403": 
+          description: authorization failure   
+          
+  /experiments/{expId}/increaseremquota:
+    post:
+      tags:
+        - Experiments
+      description: |
+        Increa
+      operationId: postExpIncRemQuota
+      parameters:
+        - name: expId
+          in: path
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...          
+      responses:
+        "200": 
+          description: OK
+          schema:
+            properties:
+              remainingQuota:
+                type: number
+        "404": 
+          description: experiment not found
+        "409": 
+          description: the remaining quota could not be increased (e.g. reached max. quota )
+        "403": 
+          description: authorization failure           
+          
+  /allexperiments:
+    get:
+      tags: 
+       - Experiments
+      description: |
+        Get all the existing experiments
+      operationId: allExperGet
+      parameters: 
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Experiments'
+        "403":
+          description: user is not allowed
+
+  /allapplications:
+    get:
+      tags: 
+       - Applications
+      description: | 
+        Get all existing applications
+      operationId: allAppGet  
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...
+      responses:
+       "200":
+        description: OK
+        schema:
+            $ref: '#/definitions/Applications'
+       "403":
+        description: Authorization failure
+ 
+  /experiments/{expid}/datasources:
+   get:
+      tags: 
+       - Data Sources
+      description: |
+        Get the urns of the assets selected for an experiment
+      operationId: dsGet
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+      responses:
+        "200":
+          description: OK
+          schema: 
+            $ref: '#/definitions/DataSource'
+        "403": 
+          description: Authorization failure
+          
+
+definitions:
+  Area:
+    properties:
+      name:
+        type: string
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+      coordinates:
+        type: array
+        items:
+          type: number
+      min:
+        type: number
+      max:
+        type: number
+      weight:
+        type: string
+
+  Experiment:
+    required:
+      - experimenterIds
+      - experimentId
+      - name
+      - registered
+      - startDate
+      - endDate
+      - status
+      - description
+    properties:
+      experimenterIds:
+        type: array
+        items:
+         type: string
+      experimentId:
+        type: string
+      name:
+        type: string
+      registered:
+        type: string
+        format: date
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+      status:
+        type: string
+        enum: ['stopped', 'running']
+      description:
+        type: string
+      area:
+        type: array
+        items:
+          "$ref": "#/definitions/Area"
+
+  Application:
+    required:
+      - experimenterIds
+      - experimentId
+      - applicationId 
+      - name
+      - type
+      - link
+    properties:
+      experimenterIds:
+        type: array
+        items:
+          type: string
+      experimentId:
+        type: string
+      applicationId:
+        type: string  
+      name: 
+        type: string
+      description:
+        type: string
+      type:
+        type: string
+      link: 
+        type: string
+      more:
+        type: object
+        
+  Applications:
+    required:
+      - applications
+    properties:
+      applications:
+        type: array
+        items: 
+          $ref: '#/definitions/Application'
+  
+  Experiments:
+    required:
+      - experiments
+    properties:
+      experiments:
+        type: array
+        items: 
+          $ref: '#/definitions/Experiment'        
+
+  DataSource:
+    required:
+      - experimentId
+      - experimenterIds
+    properties:
+      experimentId:
+        type: string
+      experimenterIds:
+        type: array
+        items:
+          type: string
+      urns: 
+        type: array
+        items:
+          type: string
+
+  Asset:
+    required:
+      - type
+      - id 
+    properties:
+      type:
+        type: string
+      id: 
+        type: string
+

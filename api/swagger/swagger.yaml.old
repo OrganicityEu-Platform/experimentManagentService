@@ -1,0 +1,911 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Experiment Management Service
+  description: This is the API description of the Experiment Management Service of the Organicity project
+  termsOfService: none
+  contact:
+    name: Organicity
+    url: http://organicity.eu/
+  license:
+    name: none
+    url: http://none
+#host: localhost:8081
+host: 31.200.243.76:8081
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:  
+          
+  /emscheck/experimentowner/{experId}/{expId} :
+    get:
+      tags: 
+       - Checks
+      description: | 
+        Check whether an experimenter is the owner of one experiment
+      operationId: emsCheckOwner  
+      parameters:
+        - name: experId
+          in: path
+          description: Experimenter Id
+          required: true
+          type: string
+        - name: expId
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+      responses:
+       "200":
+        description: The experimenter isthe owner
+       "401":
+        description: The experimenter is not the owner
+       "400":
+        description: Bad request
+        
+  /emscheck/application-experiment/{expId}/{appId} :
+    get:
+      tags: 
+       - Checks
+      description: | 
+        Check whether an application belongs to one experiment
+      operationId: emsCheckAppExp
+      parameters:
+        - name: expId
+          in: path
+          description: Experiment Id
+          required: true
+          type: string
+        - name: appId
+          type: string
+          in: path
+          required: true
+          description: Application ID
+      responses:
+       "200":
+        description: The application belongs to the experiment
+       "401":
+        description: The application does not belong to the experiment
+       "400":
+        description: Bad request      
+        
+  /emscheck/participant-experiment/{parId}/{expId} :
+    get:
+      tags: 
+       - Checks
+      description: | 
+        Check whether a participant takes part in the experiment
+      operationId: emsCheckParExp
+      parameters:
+        - name: expId
+          in: path
+          description: Experiment Id
+          required: true
+          type: string
+        - name: parId
+          type: string
+          in: path
+          required: true
+          description: participant ID
+      responses:
+       "200":
+        description: The participant takes part in the experiment
+       "401":
+        description: The participant does not take part in the experiment
+       "400":
+        description: Bad request        
+          
+  /experiments:
+    get:
+      tags: 
+       - Experiments
+      description: |
+        Get the description of the experiments belongin to a particular experimenter.
+      operationId: experGet
+      parameters: 
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+      responses:
+        "200":
+          description: experiment created successfully
+          schema:
+            $ref: '#/definitions/Experiment'
+        "403":
+          description: user is not allowed
+
+    post: 
+      tags: 
+         - Experiments
+      description: |
+        Create a new experiment
+      operationId: experPost
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...
+        - name: experiment
+          in: body
+          description: The experiment to be created.
+          schema:
+            $ref: '#/definitions/ExperimentCreation'
+      responses:
+        "201": 
+          description: experiment created
+        "403": 
+          description: authorization failure
+        "409": 
+          description: creation error
+        "400":
+          description: Schema validation error
+
+  /experiments/{id}:
+    get:
+      tags: 
+       - Experiments
+      description: | 
+        Get one experiment
+      operationId: oneExperGet  
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: id
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+      responses:
+       "200":
+        description: OK
+       "403":
+        description: Authorization failure
+       "404":
+        description: Experiment not found
+
+        
+    put:
+      tags: 
+       - Experiments
+      description: | 
+        Update experiment information
+      operationId: experPut
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: id
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+        - name: experiment
+          in: body
+          description: New experiment information
+          schema: 
+            $ref: '#/definitions/ExperimentCreation'
+      responses:
+       "200":
+        description: OK
+       "403":
+        description: Authorization failure
+       "404":
+        description: Experiment not found  
+       "400":
+         description: Schema validation error
+        
+    delete:
+      tags: 
+       - Experiments
+      description: | 
+        Remove experiment
+      operationId: experDel
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: id
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+      responses:
+       "200":
+        description: OK
+       "403":
+        description: Authorization failure
+       "404":
+        description: Experiment not found    
+
+  /experiments/{expid}/applications:
+    get:
+      tags: 
+       - Applications
+      description: | 
+        Get all applications
+      operationId: appsGet
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+      responses:
+       "200":
+        description: OK
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Application'
+       "403":
+        description: Authorization failure
+       "404":
+        description: Experiment not found
+    post:
+      tags: 
+       - Applications
+      description: | 
+        Get all applications
+      operationId: appPost
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+        - name: app
+          in: body
+          description: The application to be created.
+          schema:
+            $ref: '#/definitions/ApplicationCreation'
+        
+      responses:
+       "200":
+        description: OK
+       "403":
+        description: Authorization failure
+       "404":
+        description: Experiment not found    
+       "400":
+         description: Schema validation error
+
+  /experiments/{expid}/applications/{appid}:
+    get:
+      tags: 
+       - Applications
+      description: | 
+        Get one application
+      operationId: oneAppGet  
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+        - name: appid
+          type: string
+          in: path
+          required: true
+          description: Application ID
+      responses:
+       "200":
+        description: OK
+        schema:
+            $ref: '#/definitions/Application'
+       "403":
+        description: Authorization failure
+       "404":
+        description: Experiment not found
+    put:
+      tags: 
+       - Applications
+      description: | 
+        Update application information
+      operationId: appPut
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+        - name: appid
+          type: string
+          in: path
+          required: true
+          description: Application ID  
+        - name: application
+          in: body
+          description: New application information
+          schema: 
+            $ref: '#/definitions/ApplicationCreation'
+      responses:
+       "200":
+        description: OK
+       "403":
+        description: Authorization failure
+       "404":
+        description: Application not found  
+       "400":
+        description: Schema validation error
+    delete:
+      tags: 
+       - Applications
+      description: | 
+        Remove application
+      operationId: appDel
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: true
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+        - name: appid
+          type: string
+          in: path
+          required: true
+          description: Application ID
+      responses:
+       "200":
+        description: OK
+       "403":
+        description: Authorization failure
+       "404":
+        description: Experiment not found          
+
+  /experiments/{expid}/datasources:
+   get:
+      tags: 
+       - Data Sources
+      description: |
+        Get the urns of the assets selected for an experiment
+      operationId: dsGet
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+      responses:
+        "200":
+          description: OK
+          schema: 
+            $ref: '#/definitions/DataSource'
+            
+        "403": 
+          description: Authorization failure
+          
+   put:
+      tags: 
+       - Data Sources
+      description: |
+        Update the information regrding data sources
+      operationId: dsPut
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+          
+        - name: assets
+          in: body
+          description: Array of urns of the selected assets
+          required: true
+          schema:
+            $ref: '#/definitions/DataSourcePut'
+              
+          
+      responses:
+        "200":
+          description: OK
+        "403": 
+          description: Authorization failure   
+        "400":
+          description: Schema validation error
+          
+  /experiments/{expid}/devices:
+
+   get:
+      tags: 
+       - Devices
+      description: |
+        Get assets created by the experiment
+      operationId: devsGet
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+          
+      responses:
+        "200":
+          description: OK
+          schema:
+           {}
+        "403": 
+          description: Authorization failure     
+        "404": 
+          description: Not found
+
+   post:
+      tags: 
+       - Devices
+      description: |
+        Create a new device (experiment asset). It just calls AD
+      operationId: devPost
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+          
+        - name: device
+          in: body
+          description: Device information
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Device'
+          
+      responses:
+        "200":
+          description: OK
+          schema:
+           {}
+        "403": 
+          description: Authorization failure     
+        "400":
+          description: Schema validation error
+        "409":
+          description: Creation error
+          
+   
+        
+  /tags/domains/{expid}:
+    get: 
+      tags: 
+        - Annotation
+      description: |
+        Get the tag domains selected for a given experiment. Just forward to annotation service
+      operationId: tagGet
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+      responses: 
+        "200":
+          description: OK
+          schema:
+            type: array
+            items: {}
+        "403": 
+          description: Authorization failure
+        "404":
+          description: Not found
+          
+    put: 
+      tags: 
+        - Annotation
+      description: |
+        Modify selection of tags for the experiment
+      operationId: tagPut
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+        - name: expid
+          type: string
+          in: path
+          required: true
+          description: Experiment ID
+        - name: domains
+          in: body
+          description: List of selected tag domains
+          schema: 
+            $ref: '#/definitions/TagDomainsUpdate'
+
+
+            
+      responses: 
+        "200":
+          description: OK
+        "403": 
+          description: Authorization failure
+        "404":
+          description: Not found
+          
+  /tags/domains:
+    get: 
+      tags: 
+        - Annotation
+      description: |
+        Get available tag domains
+      operationId: allTagGet
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+      responses: 
+        "200":
+          description: OK
+        "404":
+          description: Not found
+  /dictionaries/assets:
+    get:
+      parameters: 
+        - name: Authorization
+          in: header
+          description: Auth Token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+      tags:
+        - Dictionaries
+      description: | 
+        Get dictionaries to build new assets
+      operationId: assetDictGet
+      responses:
+        "200":
+          description: OK
+    
+  /dictionaries/tools:
+    get:
+      parameters: 
+        - name: Authorization
+          in: header
+          description: Auth Token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+      tags:
+        - Dictionaries
+      description: | 
+        Get available toold
+      operationId: toolsDictGet
+      responses:
+        "200":
+          description: OK
+
+  /dictionaries/applications:
+    get:
+      parameters: 
+        - name: Authorization
+          in: header
+          description: Auth Token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+      tags:
+        - Dictionaries
+      description: | 
+        Get available toold
+      operationId: appDictGet
+      responses:
+        "200":
+          description: OK          
+
+  /se/plugin:
+    get: 
+      parameters:
+        - name: Authorization
+          in: header
+          description: Auth Token
+          required: false
+          type: string
+          format: string
+          default: Bearer ...
+      tags:
+        - SmartPhoneExperimentation
+      description: |
+        Get avaialble plugins to buils an experiment
+      operationId: sePluginsGet  
+      responses:
+        "200":
+          description: OK
+          schema:
+            {}
+        "403": 
+          description: Authorization failure
+      
+definitions:
+  Area:
+    properties:
+      name:
+        type: string
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+      coordinates:
+        type: array
+        items:
+          type: number
+      min:
+        type: number
+      max:
+        type: number
+      weight:
+        type: string
+
+  Experiment:
+    required:
+      - experimenterId
+      - experimentId
+      - name
+      - registered
+      - startDate
+      - endDate
+      - status
+      - description
+    properties:
+      experimenterId:
+        type: string
+      experimentId:
+        type: string
+      name:
+        type: string
+      registered:
+        type: string
+        format: date
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+      status:
+        type: string
+        enum: ['stopped', 'running']
+      description:
+        type: string
+      area:
+        type: array
+        items:
+          "$ref": "#/definitions/Area"
+
+  ExperimentCreation:
+    required:
+      - name
+      - startDate
+      - endDate
+      - status
+      - description
+    properties:
+      name:
+        type: string
+      startDate:
+        type: string
+        format: date
+      endDate:
+        type: string
+        format: date
+      status:
+        type: string
+        enum: ['stopped', 'running']
+      description:
+        type: string
+      area:
+        type: array
+        items:
+          "$ref": "#/definitions/Area"
+  
+  ApplicationCreation:
+    required:
+      - name
+      - type
+      - link
+    properties:
+      name: 
+        type: string
+      description:
+        type: string
+      type:
+        type: string
+      link: 
+        type: string
+      more:
+        "$ref": "#/definitions/SmartphoneExperiment"
+           
+  SmartphoneExperiment:
+    required:
+      - urlDescription
+      - sensorDependencies
+      - codeRepository
+      - filename
+    properties:
+      urlDescription:
+        type: string
+      sensorDependencies:
+        type: string
+      codeRepository:
+        type: string
+      filename:
+        type: string
+           
+  Application:
+    required:
+      - experimenterId
+      - experimentId
+      - applicationId 
+      - name
+      - type
+      - link
+    properties:
+      experimenterId:
+        type: string
+      experimentId:
+        type: string
+      applicationId:
+        type: string  
+      name: 
+        type: string
+      description:
+        type: string
+      type:
+        type: string
+      link: 
+        type: string
+      more:
+        "$ref": "#/definitions/SmartphoneExperiment"
+        
+ 
+  DataSource:
+    required:
+      - experimentId
+      - experimenterId
+    properties:
+      experimentId:
+        type: string
+      experimenterId:
+        type: string
+      urns: 
+        type: array
+        items:
+          type: string
+  DataSourcePut:      
+    properties:
+      urns: 
+        type: array
+        items:
+          type: string
+  Device:
+    required:
+      - type
+      - id 
+      - attributes
+    properties:
+      type:
+        type: string
+      id: 
+        type: string
+      attributes:
+        type: array
+        items: 
+          type: string
+  TagDomainsUpdate:
+    required:
+      - toRemove
+      - toAdd
+    properties:
+      toRemove:
+        type: array
+        items:
+          type: string
+      toAdd: 
+        type: array
+        items:
+          type: string
+          
